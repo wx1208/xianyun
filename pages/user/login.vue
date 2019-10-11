@@ -1,7 +1,5 @@
 <template>
-  <div>
-    index
-  </div>
+  <div>login</div>
 </template>
 
 <script>
