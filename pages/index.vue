@@ -98,7 +98,9 @@ export default {
             }
         },
         handleSearch(){
-          
+          const data = this.options[this.currentOption]
+
+          this.$touter.push(data.pageUrl + this.searchValue)
         }
     },
 
