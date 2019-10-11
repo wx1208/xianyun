@@ -4,7 +4,7 @@
     <!-- 内容占位组件 -->
     <nuxt />
     
-<Footer />
+    <Footer />
   </div>
 </template>
 

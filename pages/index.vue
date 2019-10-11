@@ -41,7 +41,8 @@
                     <input 
                     :placeholder="options[currentOption].placeholder" 
                     v-model="searchValue"
-                    @keyup.enter="handleSearch"/>
+                    @keyup.enter="handleSearch"
+                    />
                     <i class="el-icon-search" @click="handleSearch"></i>
                 </el-row>
             </div>
@@ -83,12 +84,11 @@ export default {
       this.$axios({
         url:"/scenics/banners"
       }).then(res=>{
-        console.log(res.data);
         const { data } = res.data
-
         this.banners = data
-
       })
+
+      console.log();
     },
       methods: {
         handleOption(index){
@@ -99,8 +99,11 @@ export default {
         },
         handleSearch(){
           const data = this.options[this.currentOption]
-
-          this.$touter.push(data.pageUrl + this.searchValue)
+        if(this.searchValue === ""){
+          return
+        }else{
+           this.$router.push(data.pageUrl + this.searchValue)
+          }
         }
     },
 
