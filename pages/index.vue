@@ -94,7 +94,7 @@ export default {
         handleOption(index){
           this.currentOption = index
             if(index === 2){
-              this.$router.push("/hotel")
+              this.$router.push("/air")
             }
         },
         handleSearch(){
