@@ -208,6 +208,13 @@ export default {
         const { data, message } = res.data
         if (message === "订单提交成功") {
           this.$message.success(message)
+
+          this.$router.push({
+              path:"/air/pay",
+              query:{
+                  id:data.id
+              }
+          })
         }
       })
 

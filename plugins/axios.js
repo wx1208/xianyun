@@ -7,7 +7,8 @@ export default (context)=>{
             Message.error(message)
         }
 
-        if(statusCode === 403){
+        // if(statusCode === 403 || statusCode === 401){
+            if([403,401].indexOf(statusCode) > -1 ){   
             context.redirect.push("/user/login")
         }
     })
