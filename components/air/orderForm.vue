@@ -127,7 +127,6 @@ export default {
       users: [
         { username: "", id: "", }
       ],
-      // detail:{},
       insurances: [],
       contactName: "", // 联系人名字
       contactPhone: "", // 联系人电话

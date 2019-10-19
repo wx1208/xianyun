@@ -15,9 +15,9 @@
       <el-col :span="4">
         <el-select
           size="mini"
-          v-model="airport"
+          clearable
+          v-model="form.airport"
           placeholder="起飞机场"
-          @change="handleAirport"
         >
           <el-option
             v-for="(item,index) in data.options.airport"
@@ -31,9 +31,9 @@
       <el-col :span="4">
         <el-select
           size="mini"
-          v-model="flightTimes"
+          clearable
+          v-model="form.flightTimes"
           placeholder="起飞时间"
-          @change="handleFlightTimes"
         >
           <el-option
             v-for="(item,index) in data.options.flightTimes"
@@ -47,9 +47,9 @@
       <el-col :span="4">
         <el-select
           size="mini"
-          v-model="company"
+          clearable
+          v-model="form.company"
           placeholder="航空公司"
-          @change="handleCompany"
         >
           <el-option
             v-for="(item,index) in data.options.company"
@@ -63,9 +63,9 @@
       <el-col :span="4">
         <el-select
           size="mini"
-          v-model="airSize"
+          clearable
+          v-model="form.airSize"
           placeholder="机型"
-          @change="handleAirSize"
         >
           <el-option
             v-for="(item,index) in sizeOptions"
@@ -89,6 +89,7 @@
         撤销
       </el-button>
     </div>
+    <span v-show="false">{{hanle}}</span>
   </div>
 </template>
 
@@ -102,11 +103,12 @@ export default {
   },
   data() {
     return {
-      airport: "",        // 机场
-      flightTimes: "",    // 出发时间
-      company: "",        // 航空公司
-      airSize: "",        // 机型大小
-
+      form: {
+        airport: "",        // 机场
+        flightTimes: "",    // 出发时间
+        company: "",        // 航空公司
+        airSize: "",        // 机型大小
+      },
       sizeOptions: [
         { name: "大", size: "L" },
         { name: "中", size: "M" },
@@ -114,51 +116,41 @@ export default {
       ],
     }
   },
+  // 多项筛选
+  computed: {
+    hanle(){
+      var arr = this.data.flights.filter(v => {
+          let valid = true
+          if (this.form.company && this.form.company !== v.airline_name) {
+            valid = false
+          }
+          if (this.form.airport && this.form.airport !== v.org_airport_name) {
+            valid = false;
+          }
+          if (this.form.flightTimes) {
+            const arr = this.form.flightTimes.split(",");
+            const start = +v.dep_time.split(":")[0];
+            if (start < +arr[0] || start >= +arr[1]) {
+              valid = false
+            }
+          }
+          if (this.form.airSize && this.form.airSize !== v.plane_size) {
+            valid = false;
+          }
+          return valid
+      })
+      this.$emit("setdataList", arr)
+      return 123
+    }
+  },
+        
   methods: {
-
-    // 选择机场时候触发
-    handleAirport(value) {
-      const arr = this.data.flights.filter(v => {
-        return v.org_airport_name === value
-      })
-      this.$emit("setdataList", arr)
-    },
-
-    // 选择出发时间时候触发
-    handleFlightTimes(value) {
-      // console.log(value);
-      const [from, to] = value.split(",")
-      const arr = this.data.flights.filter(v => {
-        const start = +v.dep_time.split(":")[0];
-        return start >= from && start < to;
-      })
-      this.$emit("setdataList", arr)
-
-    },
-
-    // 选择航空公司时候触发
-    handleCompany(value) {
-      const arr = this.data.flights.filter(v => {
-        return v.airline_name === value
-      })
-      this.$emit("setdataList", arr)
-    },
-
-    // 选择机型时候触发
-    handleAirSize(value) {
-      const arr = this.data.flights.filter(v => {
-        return v.plane_size === value
-      })
-      this.$emit("setdataList", arr)
-    },
-
     // 撤销条件时候触发
     handleFiltersCancel() {
-      this.airport = "";
-      this.flightTimes = "";
-      this.company = "";
-      this.airSize = "";
-
+      this.form.airport = "";
+      this.form.flightTimes = "";
+      this.form.company = "";
+      this.form.airSize = "";
       this.$emit("setdataList", this.data.flights)
     },
   }

@@ -28,7 +28,6 @@
             :data="item"
           />
         </div>
-
         <el-pagination
           v-if="flightsData.flights.length"
           @size-change="handleSizeChange"
@@ -40,7 +39,7 @@
           :total="flightsData.total"
         >
         </el-pagination>
-
+         
         <div
           v-if="flightsData.flights.length === 0 && !loading"
           style="padding: 50px; text-align:center"
@@ -48,7 +47,7 @@
           该航班暂无数据
         </div>
       </div>
-
+        
       <!-- 侧边栏 -->
       <div class="aside">
         <!-- 侧边栏组件 -->
@@ -82,11 +81,10 @@ export default {
       flightsData: {
         flights: [],
         info: {},
-
       },
       pageIndex: 1,
       pageSize: 5,
-      loading: true
+      loading: true,
     }
   },
   computed: {
@@ -100,11 +98,36 @@ export default {
   },
   methods: {
     setdataList(arr) {
-      if (arr) {
+       if (arr) {
         this.pageIndex = 1
         this.flightsData.flights = arr
         this.flightsData.total = arr.length
       }
+      // 多选
+      // let data = this.flightsData.flights
+      // let list = []
+      // let startTime = 0
+      // let endTime = 23
+      // if (arr.flightTimes !== '') {
+      //   let time = arr.flightTimes.split(',')
+      //     startTime = Number(time[0])
+      //     endTime = Number(time[1])
+      // }
+      // for (let item of data) {
+      //   let start = Number(item.dep_time.split(':')[0])
+      //   let end = Number(item.dep_time.split(':')[0])
+      //   let org_airport_name = item.org_airport_name === arr.airport || arr.airport === ''
+      //   let time = startTime <= start && start <= endTime
+      //   let company = item.airline_name === arr.company || arr.company === ''
+      //   let plane_size = item.plane_size === arr.airSize || arr.airSize === ''
+      //   if (org_airport_name && time && company && plane_size) {
+      //     list.push(item)
+      //   }
+      // }
+      // this.flightsItemData = list
+ 
+     
+
     },
     handleCurrentChange(val) {
       this.pageIndex = val
@@ -120,10 +143,10 @@ export default {
       url: "/airs",
       params: this.$route.query
     }).then(res => {
+      let data = res.data
       this.flightsData = res.data
       this.flightsDatas = { ...res.data }
       this.loading = false
-      this.setdataList()
     })
     }
   },

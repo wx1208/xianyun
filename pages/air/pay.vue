@@ -74,7 +74,7 @@ export default {
                 clearInterval(this.timer);
             }
         },3000)  
-    },100)
+    },10)
 },
     destroyed(){
         clearInterval(this.timer)
