@@ -135,7 +135,7 @@ export default {
 
     handleSizeChange(val) {
       this.pageSize = val
-      this.pageIndex = 1
+      this.pageIndex = val
     },
 
   getaxios(){
